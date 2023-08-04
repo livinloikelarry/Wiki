@@ -8,3 +8,10 @@ def index(request):
         "entries": util.list_entries()
     })
 
+
+def EntryPage(request, title):
+    cleanedTitle = title.strip()
+    return render(request, "encyclopedia/EntryPage.html", {
+        "title": cleanedTitle,
+        "entry": util.get_entry(cleanedTitle)
+    })
