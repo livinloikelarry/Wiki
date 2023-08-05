@@ -14,6 +14,7 @@ matches = []
 
 
 def index(request):
+    matches.clear()
     if request.method == "POST":
         form = SearchEncyclopediaForm(request.POST)
         if form.is_valid():
