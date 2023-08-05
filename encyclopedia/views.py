@@ -62,6 +62,9 @@ def NewPage(request):
                 return render(request, "encyclopedia/NewPage.html", {
                     "entryExists": entryExists
                 })
+            else:
+                util.save_entry(title, content)
+                return HttpResponseRedirect(reverse("EntryPage", args=[title]))
     return render(request, "encyclopedia/NewPage.html", {
         "NewPageForm": NewPageForm(),
         "entryExists": entryExists
