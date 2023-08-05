@@ -1,11 +1,17 @@
 from django.shortcuts import render
-
+from django import forms
 from . import util
+
+
+class SearchEncyclopediaForm(forms.Form):
+    term = forms.CharField(widget=forms.TextInput(
+        attrs={"placeholder": "Search Encyclopedia"}), label=False)
 
 
 def index(request):
     return render(request, "encyclopedia/index.html", {
-        "entries": util.list_entries()
+        "entries": util.list_entries(),
+        "form": SearchEncyclopediaForm()
     })
 
 
