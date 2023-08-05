@@ -12,7 +12,8 @@ class SearchEncyclopediaForm(forms.Form):
 
 class NewPageForm(forms.Form):
     title = forms.CharField(label="title")
-    text = forms.CharField(label="text")
+    content = forms.CharField(label="text", widget=forms.Textarea(
+        attrs={'rows': 5}))
 
 
 matches = []
@@ -49,8 +50,21 @@ def index(request):
 
 
 def NewPage(request):
+    entryExists = False
+    # if post request
+    if request.method == "POST":
+        PageForm = NewPageForm(request.POST)
+        if PageForm.is_valid():
+            title = PageForm.cleaned_data["title"]
+            content = PageForm.cleaned_data["content"]
+            if title in util.list_entries():
+                entryExists = True
+                return render(request, "encyclopedia/NewPage.html", {
+                    "entryExists": entryExists
+                })
     return render(request, "encyclopedia/NewPage.html", {
-        "NewPageForm": NewPageForm()
+        "NewPageForm": NewPageForm(),
+        "entryExists": entryExists
     })
 
 

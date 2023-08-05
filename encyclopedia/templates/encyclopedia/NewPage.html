@@ -1,12 +1,19 @@
 {% extends "encyclopedia/layout.html" %}
 
 {% block title %}
-    New Entry
+    New Page
 {% endblock %}
 
 {% block body %}
-    <h1>Create a New Page</h1>
+    {% if not entryExists %}
+        <h1>Create a New Page</h1>
+        <form action="{% url 'NewPage' %}" method="post">
+            {{NewPageForm}}
+            {% csrf_token %}
+            <input type="submit" value="Save"/>
 
-    {{NewPageForm}}
-
+        </form>
+    {% else %}
+        <h1>Error this entry already exists </h1>
+    {% endif %}
 {% endblock %}
