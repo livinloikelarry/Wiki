@@ -10,6 +10,9 @@ class SearchEncyclopediaForm(forms.Form):
         attrs={"placeholder": "Search Encyclopedia"}), label=False)
 
 
+matches = []
+
+
 def index(request):
     if request.method == "POST":
         form = SearchEncyclopediaForm(request.POST)
@@ -19,8 +22,14 @@ def index(request):
             options = [term, term.upper(), term.capitalize(), term.lower()]
             for o in options:
                 if o in util.list_entries():
-                    term = o
-                    return HttpResponseRedirect(reverse("EntryPage", args=[term]))
+                    return HttpResponseRedirect(reverse("EntryPage", args=[o]))
+            for entry in util.list_entries():
+                print(f"entry: {entry}")
+                if entry.find(term) >= 0:
+                    matches.append(entry)
+            if len(matches) >= 1:
+                print(f"matches were: {matches}")
+                return HttpResponseRedirect(reverse("search"))
         else:  # form not valid
             return render(request, "encyclopedia/index.html", {
                 "entries": util.list_entries(),
@@ -38,4 +47,10 @@ def EntryPage(request, title):
     return render(request, "encyclopedia/EntryPage.html", {
         "title": cleanedTitle,
         "entry": util.get_entry(cleanedTitle)
+    })
+
+
+def search(request):
+    return render(request, "encyclopedia/search.html", {
+        "matches": matches
     })
