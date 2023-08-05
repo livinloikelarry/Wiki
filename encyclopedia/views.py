@@ -10,6 +10,11 @@ class SearchEncyclopediaForm(forms.Form):
         attrs={"placeholder": "Search Encyclopedia"}), label=False)
 
 
+class NewPageForm(forms.Form):
+    title = forms.CharField(label="title")
+    text = forms.CharField(label="text")
+
+
 matches = []
 
 
@@ -40,6 +45,12 @@ def index(request):
     return render(request, "encyclopedia/index.html", {
         "entries": util.list_entries(),
         "form": SearchEncyclopediaForm()
+    })
+
+
+def NewPage(request):
+    return render(request, "encyclopedia/NewPage.html", {
+        "NewPageForm": NewPageForm()
     })
 
 
