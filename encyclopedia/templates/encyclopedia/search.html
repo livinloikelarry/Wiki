@@ -9,7 +9,7 @@
 
     <ul>
         {% for match in matches %}
-            <li>{{match}}</li>
+            <li><a href="{% url 'EntryPage' match %}">{{match}}</a></li>
         {% endfor %}
     </ul>
 
