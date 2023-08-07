@@ -10,7 +10,9 @@
         <form action="{% url 'NewPage' %}" method="post">
             {{NewPageForm}}
             {% csrf_token %}
-            <input type="submit" value="Save"/>
+            <div>
+                <input type="submit" value="Save"/>
+            </div>
 
         </form>
     {% else %}

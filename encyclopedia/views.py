@@ -20,7 +20,7 @@ class NewPageForm(forms.Form):
 
 class EditEntryForm(forms.Form):
     content = forms.CharField(widget=forms.Textarea(
-        attrs={'rows': 5, 'cols': 20}))
+        attrs={'rows': 5, 'cols': 20}), label=False)
 
 
 matches = []
@@ -37,13 +37,15 @@ def index(request):
             for o in options:
                 if o in util.list_entries():
                     return HttpResponseRedirect(reverse("EntryPage", args=[o]))
+            # no match but substring found
             for entry in util.list_entries():
-                print(f"entry: {entry}")
                 if entry.find(term) >= 0:
                     matches.append(entry)
             if len(matches) >= 1:
                 print(f"matches were: {matches}")
                 return HttpResponseRedirect(reverse("search"))
+            # search term not in entries
+            return HttpResponseRedirect(reverse("EntryPage", args=[term]))
         else:  # form not valid
             return render(request, "encyclopedia/index.html", {
                 "entries": util.list_entries(),
@@ -72,6 +74,7 @@ def NewPage(request):
             else:
                 util.save_entry(title, content)
                 return HttpResponseRedirect(reverse("EntryPage", args=[title]))
+    # if get request
     return render(request, "encyclopedia/NewPage.html", {
         "NewPageForm": NewPageForm(),
         "entryExists": entryExists
@@ -81,6 +84,12 @@ def NewPage(request):
 def EntryPage(request, title):
     cleanedTitle = title.strip()
     markdowner = Markdown()
+    # if entry doesn't exist
+    if not cleanedTitle in util.list_entries():
+        return render(request, "encyclopedia/EntryPage.html", {
+            "title": cleanedTitle,
+            "entry": None
+        })
     return render(request, "encyclopedia/EntryPage.html", {
         "title": cleanedTitle,
         "entry": markdowner.convert(util.get_entry(cleanedTitle))
