@@ -3,6 +3,7 @@ from django import forms
 from . import util
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+import random
 
 
 class SearchEncyclopediaForm(forms.Form):
@@ -88,6 +89,14 @@ def search(request):
     return render(request, "encyclopedia/search.html", {
         "matches": matches
     })
+
+
+def randomPage(request):
+    entries = util.list_entries()
+    numOfEntries = len(entries)
+    randomNum = random.randint(0, numOfEntries - 1)
+    title = entries[randomNum]
+    return HttpResponseRedirect(reverse("EntryPage", args=[title]))
 
 
 def edit(request, title):
