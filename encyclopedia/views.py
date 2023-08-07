@@ -16,6 +16,11 @@ class NewPageForm(forms.Form):
         attrs={'rows': 5}))
 
 
+class EditEntryForm(forms.Form):
+    content = forms.CharField(widget=forms.Textarea(
+        attrs={'rows': 5}))
+
+
 matches = []
 
 
@@ -82,4 +87,20 @@ def EntryPage(request, title):
 def search(request):
     return render(request, "encyclopedia/search.html", {
         "matches": matches
+    })
+
+
+def edit(request, title):
+    # get entry text based on title
+    if request.method == "POST":
+        form = EditEntryForm(request.POST)
+        text = EditEntryForm.cleaned_data['content']
+        return render(request, "encyclopedia/edit.html", {
+            "editForm": content.render(None, content)
+        })
+    # get method called when user clicks edit link
+    entryText = util.get_entry(title)
+    content = EditEntryForm()
+    return render(request, "encyclopedia/edit.html", {
+        "editForm": EditEntryForm(initial={'content': entryText})
     })

@@ -8,6 +8,7 @@
     {% if entry == None %}
     <h2>No results for that entry</h2>
     {% else %}
+    <a href="{% url 'edit' title %}">Edit</a>
     <p>{{ entry }}</p>
     {% endif %} 
 {% endblock %}
