@@ -4,6 +4,7 @@ from . import util
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 import random
+from markdown2 import Markdown
 
 
 class SearchEncyclopediaForm(forms.Form):
@@ -79,9 +80,10 @@ def NewPage(request):
 
 def EntryPage(request, title):
     cleanedTitle = title.strip()
+    markdowner = Markdown()
     return render(request, "encyclopedia/EntryPage.html", {
         "title": cleanedTitle,
-        "entry": util.get_entry(cleanedTitle)
+        "entry": markdowner.convert(util.get_entry(cleanedTitle))
     })
 
 

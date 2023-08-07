@@ -9,6 +9,6 @@
     <h2>No results for that entry</h2>
     {% else %}
     <a href="{% url 'edit' title %}">Edit</a>
-    <p>{{ entry }}</p>
+    <p>{{ entry | safe }}</p>
     {% endif %} 
 {% endblock %}
