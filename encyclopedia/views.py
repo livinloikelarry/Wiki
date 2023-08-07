@@ -14,12 +14,12 @@ class SearchEncyclopediaForm(forms.Form):
 class NewPageForm(forms.Form):
     title = forms.CharField(label="title")
     content = forms.CharField(label="text", widget=forms.Textarea(
-        attrs={'rows': 5}))
+        attrs={'rows': 5, 'cols': 20}))
 
 
 class EditEntryForm(forms.Form):
     content = forms.CharField(widget=forms.Textarea(
-        attrs={'rows': 5}))
+        attrs={'rows': 5, 'cols': 20}))
 
 
 matches = []
